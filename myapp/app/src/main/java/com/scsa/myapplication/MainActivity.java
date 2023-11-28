@@ -2,7 +2,7 @@ package com.scsa.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -10,20 +10,25 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.scsa.myapplication.databinding.ActivityMainBinding;
+
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity_SCSA";
+    // 화면 xml -> java : viewBinding : java이름 xml + Binding
+    ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Button button = findViewById(R.id.next_button);
-        button.setOnClickListener(v -> {
-            // Toast.makeText(this, "클릭됨", Toast.LENGTH_SHORT).show();
-            // Snackbar.make(v, "클릭됨", Snackbar.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, NextActivity.class);
-            intent.putExtra("hello", "from main activity");
-            // startActivity(intent);
-            startActivityForResult(intent, 1);
+
+        // ActivityMainBinding.inflate(getLayoutInflater()) == R.layout.activity_main;
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        // binding.nextButton == findViewById(R.id.next_button)
+        binding.nextButton.setOnClickListener(v -> {
+            Log.d(TAG, "onCreate: 버튼 클릭됨");
+
         });
     }
 
