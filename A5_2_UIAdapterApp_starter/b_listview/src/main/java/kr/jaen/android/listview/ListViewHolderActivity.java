@@ -45,15 +45,21 @@ public class ListViewHolderActivity extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             View view = convertView;
-            ViewHolder holder = null;
+            ViewHolder holder;
             if(view == null){
                 LayoutInflater inf = getLayoutInflater();
                 view = inf.inflate(R.layout.item_row,  parent, false);
                 Log.d(TAG, "getView: Inflated..");
+                TextView tv = (TextView) view.findViewById(R.id.country_name);
+                holder = new ViewHolder();
+                holder.textView = tv;
+                view.setTag(holder);
+            }else{
+                // 재사용된다면
+                holder = (ViewHolder) view.getTag();
             }
 
-            TextView tv = (TextView) view.findViewById(R.id.country_name);
-            tv.setText(countries.get(position));
+            holder.textView.setText(countries.get(position));
 
 
             return view;

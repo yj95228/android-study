@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.List;
 
 import kr.jaen.android.listview.databinding.ActivityListViewBinding;
+import kr.jaen.android.listview.databinding.ItemRowViewbindingBinding;
 
 public class ListViewWithViewBindingActivity extends AppCompatActivity {
 
@@ -70,6 +71,8 @@ public class ListViewWithViewBindingActivity extends AppCompatActivity {
             return position;
         }
 
+        ItemRowViewbindingBinding binding;
+
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             View view = convertView;
@@ -77,10 +80,12 @@ public class ListViewWithViewBindingActivity extends AppCompatActivity {
             //R.layout.row_of_base_adapter_list_view
             if (view == null) {
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_row_viewbinding, parent, false);
+                binding = ItemRowViewbindingBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+                view = binding.getRoot();
 
                 holder = new ViewHolder();
-                holder.tvText = view.findViewById(R.id.tv_text);
-                holder.ivIcon = view.findViewById(R.id.iv_icon);
+                holder.tvText = binding.tvText;
+                holder.ivIcon = binding.ivIcon;
 
                 view.setTag(holder);
             }

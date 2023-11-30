@@ -34,11 +34,11 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         // 4. 레이아웃 매니저 생성 및 설정
-        LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+//        LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
 //        LinearLayoutManager manager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
 //        GridLayoutManager manager = new GridLayoutManager(this, 3, RecyclerView.VERTICAL, false);
 //        GridLayoutManager manager = new GridLayoutManager(this, 3, RecyclerView.HORIZONTAL, false);
-//        StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+        StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
 
         recyclerView.setLayoutManager(manager);
 
