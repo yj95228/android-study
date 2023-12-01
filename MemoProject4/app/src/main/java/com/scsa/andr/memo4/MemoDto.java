@@ -9,13 +9,13 @@ public class MemoDto implements Serializable {
     String title;
     String body;
 
+    long reg_date;
+
     public MemoDto(String title, String body, long reg_date) {
         this.title = title;
         this.body = body;
         this.reg_date = reg_date;
     }
-
-    long reg_date;
 
     public String getTitle() {
         return title;

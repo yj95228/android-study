@@ -38,21 +38,30 @@ public class MemoMainActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
 
         Intent editIntent = getIntent();
+        int type = editIntent.getIntExtra("type", 0);
         MemoDto dto = (MemoDto) editIntent.getSerializableExtra("dto");
-        Log.d(TAG, "onCreate: dto"+dto);
-        if (dto == null) {
+        int pos = editIntent.getIntExtra("position", -1);
+
+        if (type == 0) {
+            // 초기 값 세팅
             MEMO.add(new MemoDto("메모 앱 만들기1", "내용1", System.currentTimeMillis()));
             MEMO.add(new MemoDto("메모 앱 만들기2", "내용2", System.currentTimeMillis()));
             MEMO.add(new MemoDto("메모 앱 만들기3", "내용3", System.currentTimeMillis()));
-        } else {
-            MEMO.add(dto);
-            adapter.notifyDataSetChanged();
+        } else if (type == 1) { // 등록 버튼 클릭 시
+            if (pos != -1) { // 수정
+                MEMO.set(pos, dto);
+            } else { // 등록
+                MEMO.add(dto);
+            }
+        } else if (type == 2) {
+            // 삭제
+            MEMO.remove(pos);
         }
+        adapter.notifyDataSetChanged();
 
         findViewById(R.id.register).setOnClickListener(v -> {
             Intent intent = new Intent(this, MemoEditActivity.class);
             intent.putExtra("visibility", View.GONE);
-//            startActivityForResult(intent, 100);
             startActivity(intent);
         });
 
@@ -64,15 +73,6 @@ public class MemoMainActivity extends AppCompatActivity {
         });
 
     }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent intent) {
-//        super.onActivityResult(requestCode, resultCode, intent);
-//        MemoDto dto = (MemoDto) intent.getSerializableExtra("dto");
-//        intent.putExtra("visibility", View.GONE);
-//        MEMO.add(dto);
-//        adapter.notifyDataSetChanged();
-//    }
 
     class MemoAdapter extends BaseAdapter {
         List<MemoDto> list;
@@ -101,7 +101,6 @@ public class MemoMainActivity extends AppCompatActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             View view = null;
             if (convertView == null) { // 최초 호출, 재사용되지 않을 때
-                Log.d(TAG, "getView: 재사용 없음 "+position);
                 // LayoutInflater inflater = getLayoutInflater();
                 LayoutInflater inflater = LayoutInflater.from(parent.getContext());
                 view = inflater.inflate(R.layout.item_row, parent, false); // true로 줄 일 잘 없음
@@ -121,8 +120,4 @@ public class MemoMainActivity extends AppCompatActivity {
         }
     }
 
-
-//    public void addMemoList(MemoDto memoDto){
-//        MEMO.add(memoDto);
-//    }
 }

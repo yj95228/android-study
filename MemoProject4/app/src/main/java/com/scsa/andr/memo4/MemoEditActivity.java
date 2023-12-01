@@ -26,27 +26,38 @@ public class MemoEditActivity extends AppCompatActivity {
         EditText editTextText = findViewById(R.id.editTextText);
         EditText editTextTextMultiLine = findViewById(R.id.editTextTextMultiLine);
 
-        if(dto != null){
+        int position = fromIntent.getIntExtra("position", -1);
+
+        if (dto != null) {
             editTextText.setText(dto.getTitle());
             editTextTextMultiLine.setText(dto.getBody());
+        } else {
+            findViewById(R.id.delete_button).setVisibility(View.GONE);
         }
 
-        int visibility = fromIntent.getIntExtra("visibility", View.VISIBLE);
-        findViewById(R.id.delete_button).setVisibility(visibility);
+        Intent intent = new Intent(this, MemoMainActivity.class);
+        intent.putExtra("position", position);
 
         findViewById(R.id.save_button).setOnClickListener(v -> {
-            Intent intent = new Intent(this, MemoMainActivity.class);
-            String title = editTextText.getText().toString();
-            String body = editTextTextMultiLine.getText().toString();
-            long date = System.currentTimeMillis();
-            MemoDto new_dto = new MemoDto(title, body, date);
+            intent.putExtra("dto",
+                    new MemoDto(
+                        editTextText.getText().toString(),
+                        editTextTextMultiLine.getText().toString(),
+                        System.currentTimeMillis()
+                    )
+            );
 
-            intent.putExtra("dto", new_dto);
+            intent.putExtra("type", 1);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.delete_button).setOnClickListener(v -> {
+            intent.putExtra("type", 2);
             startActivity(intent);
         });
 
         findViewById(R.id.cancel_button).setOnClickListener(v -> {
-            Intent intent = new Intent(this, MemoMainActivity.class);
+            intent.putExtra("type", 3);
             startActivity(intent);
         });
     }
