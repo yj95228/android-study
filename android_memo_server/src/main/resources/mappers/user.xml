@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- name space는 fully qualified name으로 설정한다. -->
+<mapper namespace="com.ssafy.vue.dao.UserDao">
+	
+	<select id="select" parameterType="string" resultType="User">
+		SELECT * FROM vue_user
+		WHERE user_id = #{id}
+	</select>
+	
+	<select id="selectAll" resultType="User">
+		SELECT user_id, name, '' as pwd FROM vue_user
+	</select>
+	
+</mapper>

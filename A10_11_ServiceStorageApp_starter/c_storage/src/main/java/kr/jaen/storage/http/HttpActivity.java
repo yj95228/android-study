@@ -49,7 +49,7 @@ public class HttpActivity extends AppCompatActivity {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                     StringBuilder message = new StringBuilder();
                     String read = "";
-                    while ( (read = reader.readLine()) != null){
+                    while ( (read = reader.readLine()) != null){    // null: end of stream
                         Log.d(TAG, "run: read : "+ read);
                         message.append(read);
                     }

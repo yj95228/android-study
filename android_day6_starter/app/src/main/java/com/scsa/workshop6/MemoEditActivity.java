@@ -20,26 +20,26 @@ public class MemoEditActivity extends AppCompatActivity {
 
         Intent fromMain = getIntent();
         MemoDto memo = (MemoDto) fromMain.getSerializableExtra("memo") ;
-        int position = fromMain.getIntExtra("position", -1);
+        int id = fromMain.getIntExtra("id", -1);
         Log.d(TAG, "onCreate: "+memo);
-        Log.d(TAG, "onCreate: "+position);
+        Log.d(TAG, "onCreate: "+id);
 
         if(memo != null){ // 수정
             initData(memo);
-            initView(position);
+            initView(id);
         }else{ // 입력
             initView(-1);
         }
-        initEvent(position);
+        initEvent(id);
 
     }
 
-    private void initEvent(int position) {
+    private void initEvent(int id) {
         binding.save.setOnClickListener(v -> {
-            MemoDto dto = new MemoDto(binding.title.getText().toString(), binding.body.getText().toString(), System.currentTimeMillis());
+            MemoDto dto = new MemoDto(id, binding.title.getText().toString(), binding.body.getText().toString(), System.currentTimeMillis());
             Intent intent = new Intent();
             intent.putExtra("action", "save");
-            intent.putExtra("position", position);
+            intent.putExtra("id", id);
             intent.putExtra("result", dto);
 
             setResult(RESULT_OK, intent);
@@ -49,7 +49,7 @@ public class MemoEditActivity extends AppCompatActivity {
         binding.delete.setOnClickListener( v -> {
             Intent intent = new Intent();
             intent.putExtra("action", "delete");
-            intent.putExtra("position", position);
+            intent.putExtra("id", id);
 
             setResult(RESULT_OK, intent);
             finish();
@@ -58,7 +58,7 @@ public class MemoEditActivity extends AppCompatActivity {
         binding.cancel.setOnClickListener( v -> {
             Intent intent = new Intent();
             intent.putExtra("action", "cancel");
-            intent.putExtra("position", position);
+            intent.putExtra("id", id);
 
             setResult(RESULT_OK, intent);
             finish();

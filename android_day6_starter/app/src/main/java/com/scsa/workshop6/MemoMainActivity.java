@@ -36,6 +36,7 @@ import java.util.List;
 
 public class MemoMainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity_SCSA";
+    List<MemoDto> list = new ArrayList<>();
     MyAdapter adapter;
 
     private static final int REQUEST_PERMISSIONS = 100;
@@ -61,13 +62,13 @@ public class MemoMainActivity extends AppCompatActivity {
         dbHelper = new DBHelper(this, "mydb.db", null, 1);
         dbHelper.open();
 
-        refresh();
 
         registerForContextMenu(binding.listView);
 
         adapter = new MyAdapter();
         binding.listView.setAdapter(adapter);
         initEvent();
+        refresh();
 
         // 1. 권한이 있는지 확인.
         int permissionCheck = ContextCompat.checkSelfPermission(this,
@@ -116,7 +117,7 @@ public class MemoMainActivity extends AppCompatActivity {
 
         binding.listView.setOnItemClickListener((parent, view, position, id) -> {
             Intent intent = new Intent(MemoMainActivity.this, MemoEditActivity.class);
-            intent.putExtra("position", position);
+            intent.putExtra("id", list.get(position).getId());
             intent.putExtra("memo", dbHelper.select(String.valueOf(id)));
             startActivityForResult(intent, Util.EDIT);
         });
@@ -150,8 +151,8 @@ public class MemoMainActivity extends AppCompatActivity {
                     if("save".equals(action)){
                         MemoDto memo = (MemoDto) data.getSerializableExtra("result");
                         Log.d(TAG, "onActivityResult: "+memo);
-                        dbHelper.insert(memo.getTitle(), memo.getBody(), memo.getRegDate());
-                        adapter.notifyDataSetChanged();
+                        dbHelper.insert(memo);
+                        refresh();
                     }else if("cancel".equals(action)){
 
                     }
@@ -159,17 +160,17 @@ public class MemoMainActivity extends AppCompatActivity {
             }else if(requestCode == Util.EDIT){ // 수정 삭제 취소
                 if(data != null){
                     String action = data.getStringExtra("action");
-                    int position = data.getIntExtra("position", -1);
+                    int id = data.getIntExtra("id", -1);
 
                     if("save".equals(action)){
                         MemoDto dto = (MemoDto)data.getSerializableExtra("result");
-                        dbHelper.update(String.valueOf(position), dto.getTitle(), dto.getBody(), dto.getRegDate());
-                        adapter.notifyDataSetChanged();
+                        dbHelper.update(dto);
+                        refresh();
                     }else if("delete".equals(action)){
 
-                        Log.d(TAG, "onActivityResult: delete : "+position);
-                        dbHelper.delete(String.valueOf(position));
-                        adapter.notifyDataSetChanged();
+                        Log.d(TAG, "onActivityResult: delete : "+id);
+                        dbHelper.delete(id+"");
+                        refresh();
                     }else if("cancel".equals(action)){
 
                     }
@@ -197,8 +198,8 @@ public class MemoMainActivity extends AppCompatActivity {
             .setMessage("정말로 삭제하시겠습니까?")
             .setPositiveButton("예", (dialog, which) -> {
                 Toast.makeText(this, "position:"+aptInfo.position, Toast.LENGTH_SHORT).show();
-                dbHelper.delete(String.valueOf(aptInfo.position));
-                adapter.notifyDataSetChanged();
+                dbHelper.delete(list.get(aptInfo.position).getId()+"");
+                refresh();
             })
             .setNegativeButton("아니오", (dialog, which) -> {
             });
@@ -212,12 +213,12 @@ public class MemoMainActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return dbHelper.getDataCount();
+            return list.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return dbHelper.select(String.valueOf(position));
+            return list.get(position);
         }
 
         @Override
@@ -233,9 +234,9 @@ public class MemoMainActivity extends AppCompatActivity {
                 view = inflater.inflate(R.layout.item_row, parent, false);
             }
 
-            String result = dbHelper.select(String.valueOf(position));
-            Log.d(TAG, "getView: "+result+position);
-            MemoDto dto = new MemoDto("asdf", "1234", System.currentTimeMillis());
+//            String result = dbHelper.select(position+"");
+//            Log.d(TAG, "getView: "+result+position);
+            MemoDto dto = list.get(position);
 
             TextView textView = view.findViewById(R.id.title);
             TextView date = view.findViewById(R.id.date);
@@ -288,15 +289,13 @@ public class MemoMainActivity extends AppCompatActivity {
             Toast.makeText(MemoMainActivity.this, "BroadcastActivity : "+msg, Toast.LENGTH_SHORT).show();
 
             Log.d(TAG, "onReceive: " + msg);
-            dbHelper.insert(msg, msg, System.currentTimeMillis());
-            adapter.notifyDataSetChanged();
+//            dbHelper.insert(msg, msg, System.currentTimeMillis());
+//            adapter.notifyDataSetChanged();
         }
     };
 
     private void refresh() {
-        String result = dbHelper.selectAll();
-        if (adapter != null) {
-            adapter.notifyDataSetChanged();
-        }
+        list = dbHelper.selectAll();
+        adapter.notifyDataSetChanged();
     }
 }

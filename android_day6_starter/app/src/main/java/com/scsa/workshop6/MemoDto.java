@@ -4,9 +4,17 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class MemoDto implements Serializable {
+    private int id;
     private String title;
     private String body;
     private long regDate;
+
+    public MemoDto(int id, String title, String body, long date) {
+        this.id = id;
+        this.title = title;
+        this.body = body;
+        this.regDate = date;
+    }
 
     public MemoDto(String title, String body, long date) {
         this.title = title;
@@ -14,6 +22,10 @@ public class MemoDto implements Serializable {
         this.regDate = date;
     }
     public MemoDto(){}
+
+    public int getId() { return id; }
+
+    public void setId(int id) { this.id = id; }
 
     public String getTitle() {
         return title;

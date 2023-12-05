@@ -7,7 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.scsa.workshop6.MemoDto;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class DBHelper extends SQLiteOpenHelper {
 
@@ -27,7 +31,9 @@ public class DBHelper extends SQLiteOpenHelper {
         StringBuilder sql = new StringBuilder();
         sql.append("CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "(" + "\n");
         sql.append(COLUMNS[0] + " integer primary key autoincrement, \n");
-        sql.append(COLUMNS[1] + " text, \n" + COLUMNS[2] + " text, \n" + COLUMNS[3] + " text \n");
+        sql.append(COLUMNS[1] + " text, \n");
+        sql.append(COLUMNS[2] + " text, \n");
+        sql.append(COLUMNS[3] + " integer \n");
         sql.append(");");
 
         db.execSQL(sql.toString());
@@ -50,11 +56,11 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.d(TAG, "onOpen()::Database 준비 완료");
     }
 
-    public void insert(String title, String body, long regDate) {
+    public void insert(MemoDto dto) {
         ContentValues values = new ContentValues();
-        values.put(COLUMNS[1], title);
-        values.put(COLUMNS[2], body);
-        values.put(COLUMNS[3], new Date(regDate).toString());
+        values.put(COLUMNS[1], dto.getTitle());
+        values.put(COLUMNS[2], dto.getBody());
+        values.put(COLUMNS[3], System.currentTimeMillis());
 
         db.beginTransaction();
 
@@ -74,54 +80,52 @@ public class DBHelper extends SQLiteOpenHelper {
         db.endTransaction();
     }
 
-    public String select(String id) {
+    public MemoDto select(String id) {
         Cursor cursor = db.query(TABLE_NAME, COLUMNS,
                 "_id = ?", new String[]{id},
                 null, null, null);
 
-        StringBuilder result = new StringBuilder();
-        result.append(COLUMNS[0] + ", " + COLUMNS[1] + ", " + COLUMNS[2] + ", " + COLUMNS[3] + "\n");
+        MemoDto dto = null;
         if (cursor.moveToNext()) {
-            result.append(cursor.getInt(0) + ", "
-                    + cursor.getString(1) + ", "
-                    + cursor.getString(2) + ", "
-                    + cursor.getString(3) + "\n");
+            dto = new MemoDto(
+                    cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getInt(3)
+            );
         }
 
-        return result.toString();
+        return dto;
     }
 
-    public String selectAll() {
+    public List<MemoDto> selectAll() {
         // 1. 메서드를 이용한 SELECT
         //Cursor cursor = db.query(TABLE_NAME, COLUMNS, null, null, null, null, null);
 
         // 2. SQL을 이용한 SELECT
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
-
-        StringBuilder result = new StringBuilder();
-        result.append(COLUMNS[0] + ", " + COLUMNS[1] + ", " + COLUMNS[2] + ", " + COLUMNS[3] + "\n");
-
+        List<MemoDto> list = new ArrayList<>();
         while(cursor.moveToNext()){
-            result.append(cursor.getInt(0) + ", "
-                    + cursor.getString(1) + ", "
-                    + cursor.getString(2) + ", "
-                    + cursor.getString(3) + "\n");
+            list.add(new MemoDto(
+                    cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getInt(3))
+            );
         }
-
-        return result.toString();
+        return list;
     }
 
-    public void update(String id, String title, String body, long regDate) {
+    public void update(MemoDto dto) {
         ContentValues values = new ContentValues();
-        values.put(COLUMNS[1], title);
-        values.put(COLUMNS[2], body);
-        values.put(COLUMNS[3], new Date(regDate).toString());
+        values.put(COLUMNS[1], dto.getTitle());
+        values.put(COLUMNS[2], dto.getBody());
 
         db.beginTransaction();
 
         // 1. 메서드를 이용한 UPDATE
         int result = db.update(TABLE_NAME, values,
-                "_id = ?", new String[]{ id });
+                "_id = ?", new String[]{ dto.getId()+"" });
 
         // 2. SQL을 이용한 UPDATE
         /*StringBuilder sql = new StringBuilder();
