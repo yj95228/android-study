@@ -1,23 +1,22 @@
-package edu.jaen.android.alarm_project;
+package com.scsa.andr.project;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import edu.jaen.android.alarm_project.databinding.ActivityAlarmBinding;
+import com.scsa.andr.project.databinding.ActivityWakeupBinding;
 
-public class AlarmActivity extends AppCompatActivity {
+public class WakeupActivity extends AppCompatActivity {
 	MediaPlayer player;
 
-	private ActivityAlarmBinding binding;
+	private ActivityWakeupBinding binding;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		binding = ActivityAlarmBinding.inflate(getLayoutInflater());
+		binding = ActivityWakeupBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
 		
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED

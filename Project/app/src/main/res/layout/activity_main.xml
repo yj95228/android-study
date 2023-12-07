@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/todo_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TODO-LIST"
+        app:layout_constraintBottom_toTopOf="@+id/alarm_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/alarm_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="알람"
+        app:layout_constraintBottom_toTopOf="@+id/mouse_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/todo_button" />
+
+    <Button
+        android:id="@+id/mouse_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="쥐잡기 게임"
+        app:layout_constraintBottom_toTopOf="@+id/speech_to_text_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/alarm_button" />
+
+    <Button
+        android:id="@+id/speech_to_text_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="음성인식"
+        app:layout_constraintBottom_toTopOf="@+id/text_to_speech_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mouse_button" />
+
+    <Button
+        android:id="@+id/text_to_speech_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="글 -> 음성"
+        app:layout_constraintBottom_toTopOf="@+id/news_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/speech_to_text_button"
+        app:layout_constraintVertical_bias="0.276" />
+
+    <Button
+        android:id="@+id/news_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="뉴스 읽기"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_to_speech_button" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
