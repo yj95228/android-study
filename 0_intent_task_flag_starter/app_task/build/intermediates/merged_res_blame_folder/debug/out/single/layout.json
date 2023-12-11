@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "edu.jaen.android.task1.app_task-mergeDebugResources-30:/layout/second.xml",
+        "source": "edu.jaen.android.task1.app_task-main-33:/layout/second.xml"
+    },
+    {
+        "merged": "edu.jaen.android.task1.app_task-mergeDebugResources-30:/layout/third.xml",
+        "source": "edu.jaen.android.task1.app_task-main-33:/layout/third.xml"
+    },
+    {
+        "merged": "edu.jaen.android.task1.app_task-mergeDebugResources-30:/layout/activity_main.xml",
+        "source": "edu.jaen.android.task1.app_task-main-33:/layout/activity_main.xml"
+    }
+]

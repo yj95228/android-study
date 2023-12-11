@@ -7,8 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -92,6 +96,32 @@ public class MemoMainActivity extends AppCompatActivity {
         refresh();
     }
 
+    private void processIntent(Intent intent) {
+        String action = intent.getAction();
+        // Main, Ndef_discovered
+        if (action.equals(NfcAdapter.ACTION_NDEF_DISCOVERED)) {
+            Parcelable[] parcelable = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+            for(Parcelable parcelable1 : parcelable) {
+                NdefMessage message = (NdefMessage) parcelable1;
+                NdefRecord[] records = message.getRecords();
+                for (NdefRecord record : records) {
+                    byte [] b = record.getPayload();
+                    String idx = new String(b, 3, b.length-3).split(":")[1];
+                    Log.d(TAG, "processIntent: idx : "+ idx + apiService.getData(idx));
+                    if (apiService.getData(idx) != null) {
+                        Intent nfcIntent = new Intent(MemoMainActivity.this, MemoEditActivity.class);
+                        nfcIntent.putExtra("id", idx);
+                        nfcIntent.putExtra("memo", list.get(Integer.parseInt(idx)));
+                        startActivityForResult(nfcIntent, Util.EDIT);
+                    } else {
+                        startActivityForResult(new Intent(this, MemoEditActivity.class), Util.INSERT);
+                    }
+                }
+            }
+
+        }
+    }
+
     private void refresh() {
 //        list = dbHelper.selectAll();
 
@@ -103,6 +133,7 @@ public class MemoMainActivity extends AppCompatActivity {
                     list = response.body();
                     adapter.notifyDataSetChanged();
                     Log.d(TAG, "onResponse: "+ list);
+                    processIntent(getIntent());
                 }
             }
 

@@ -3,11 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <!-- 다른앱 위에 표시하려면 System Alert Window Permission이 있어야 한다. -->
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
 
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".ApplicationClass"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -16,6 +21,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Project"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
             android:name=".MainActivity"
@@ -27,6 +33,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".MemoMainActivity" />
+        <activity android:name=".MemoEditActivity" />
+
         <activity android:name=".AlarmMainActivity" />
         <activity android:name=".WakeupActivity" />
         <receiver android:name=".AlarmReceiver" />
@@ -37,6 +46,7 @@
         <activity android:name=".TextToSpeechActivity" />
 
         <activity android:name=".NewsActivity" />
+
     </application>
 
 </manifest>

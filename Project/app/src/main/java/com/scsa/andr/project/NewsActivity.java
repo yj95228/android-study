@@ -1,5 +1,7 @@
 package com.scsa.andr.project;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,6 +9,7 @@ import android.util.Xml;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -25,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.scsa.andr.project.databinding.LayoutBinding;
 import com.scsa.andr.project.databinding.RowBinding;
 
 public class NewsActivity extends AppCompatActivity {
@@ -45,7 +49,8 @@ public class NewsActivity extends AppCompatActivity {
         new MyAsyncTask().execute("https://www.hani.co.kr/rss/");
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
-            Toast.makeText(NewsActivity.this, list.get(position)+"clicked", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(list.get(position).link));
+            startActivity(intent);
         });
     }
 

@@ -22,6 +22,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initEvent() {
+        binding.todoButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, MemoMainActivity.class);
+            startActivity(intent);
+        });
+
         binding.alarmButton.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, AlarmMainActivity.class);
             startActivity(intent);
