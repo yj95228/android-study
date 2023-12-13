@@ -47,16 +47,18 @@ public class MainActivity extends AppCompatActivity {
 	private void getNFCData(Intent intent) {
 		Toast.makeText(this, "수신 액션 : " + getIntent().getAction(), Toast.LENGTH_SHORT).show();
 		Log.d(TAG, "getNFCData: "+getIntent().getAction());
-		if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
+		if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction()) ||
+			NfcAdapter.ACTION_TAG_DISCOVERED.equals(getIntent().getAction())) {
 			Parcelable[] rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
 
 			if (rawMsgs != null) {
-
-
-
-
-
-
+				for (Parcelable rawMsg : rawMsgs) {
+					NdefMessage ndefMessage = (NdefMessage) rawMsg;
+					NdefRecord [] ndefRecord = ndefMessage.getRecords();
+					for (NdefRecord record : ndefRecord) {
+						Log.d(TAG, "getNFCData: "+ new String(record.getPayload()));
+					}
+				}
 			}
 		}
 	}
@@ -69,16 +71,18 @@ public class MainActivity extends AppCompatActivity {
 		i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		pIntent = PendingIntent.getActivity(this, 0, i, PendingIntent.FLAG_MUTABLE);
 
-		IntentFilter filter = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
-
-		try {
-			filter.addDataType("text/*");
-		} catch (IntentFilter.MalformedMimeTypeException e) {
-			e.printStackTrace();
-			throw new RuntimeException("fail", e);
-		}
-
-		filters = new IntentFilter[]{filter, };
+		// intent filter를 별도로 선언해야 한다
+//		IntentFilter filter = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
+//
+//		try {
+//			filter.addDataType("text/*");
+//		} catch (IntentFilter.MalformedMimeTypeException e) {
+//			e.printStackTrace();
+//			throw new RuntimeException("fail", e);
+//		}
+//
+//		filters = new IntentFilter[]{filter, };
+		IntentFilter filter = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
 		nAdapter.enableForegroundDispatch(this, pIntent, filters, null);
 
 	}

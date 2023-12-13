@@ -1,6 +1,7 @@
 package com.scsa.andr.project;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -31,8 +32,11 @@ import java.util.List;
 import com.scsa.andr.project.databinding.LayoutBinding;
 import com.scsa.andr.project.databinding.RowBinding;
 
+import retrofit2.http.Url;
+
 public class NewsActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity_SCSA";
+    View selectedTab;
     ListView listView;
     MyAdapter adapter;
     List<HaniItem> list = new ArrayList<>();
@@ -41,12 +45,38 @@ public class NewsActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
-
+        setTitle("뉴스 읽기");
         listView = findViewById(R.id.result);
         adapter = new MyAdapter();
         listView.setAdapter(adapter);
 
         new MyAsyncTask().execute("https://www.hani.co.kr/rss/");
+        selectedTab = findViewById(R.id.hani);
+        selectedTab.setBackgroundColor(Color.parseColor("#79B8F4"));
+
+        findViewById(R.id.hani).setOnClickListener(v -> {
+            changeTab(v, "https://www.hani.co.kr/rss/");
+        });
+
+        findViewById(R.id.mk).setOnClickListener(v -> {
+            changeTab(v, "https://www.mk.co.kr/rss/30000001/");
+        });
+
+        findViewById(R.id.etnews).setOnClickListener(v -> {
+            changeTab(v, "https://rss.etnews.com/Section901.xml");
+        });
+
+        findViewById(R.id.chosun).setOnClickListener(v -> {
+            changeTab(v, "https://www.chosun.com/arc/outboundfeeds/rss/?outputType=xml");
+        });
+
+        findViewById(R.id.hk).setOnClickListener(v -> {
+            changeTab(v, "https://www.hankyung.com/feed/all-news");
+        });
+
+        findViewById(R.id.cnn).setOnClickListener(v -> {
+            changeTab(v, "http://rss.cnn.com/rss/edition.rss");
+        });
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(list.get(position).link));
@@ -54,6 +84,19 @@ public class NewsActivity extends AppCompatActivity {
         });
     }
 
+    private void changeTab(View tab, String url) {
+        list.clear();
+        // 이전에 선택된 탭의 배경 색상 초기화
+        selectedTab.setBackgroundColor(Color.TRANSPARENT);
+
+        // 선택된 탭을 현재 탭으로 업데이트
+        selectedTab = tab;
+        selectedTab.setBackgroundColor(Color.parseColor("#79B8F4"));
+
+        // 데이터 로딩
+        new MyAsyncTask().execute(url);
+        adapter.notifyDataSetChanged();
+    }
 
     class MyAsyncTask extends AsyncTask<String, String, List<HaniItem>> {
 

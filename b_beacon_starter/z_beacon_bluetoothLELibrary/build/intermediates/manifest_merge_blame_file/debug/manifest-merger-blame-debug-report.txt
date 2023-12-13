@@ -1,0 +1,17 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="uk.co.alt236.bluetoothlelib" >
+4
+5    <uses-sdk android:minSdkVersion="24" />
+6
+7    <application
+7-->C:\scsa\android-workspace\b_beacon_starter\z_beacon_bluetoothLELibrary\src\main\AndroidManifest.xml:7:5-11:19
+8        android:allowBackup="true"
+8-->C:\scsa\android-workspace\b_beacon_starter\z_beacon_bluetoothLELibrary\src\main\AndroidManifest.xml:8:9-35
+9        android:icon="@drawable/ic_launcher"
+9-->C:\scsa\android-workspace\b_beacon_starter\z_beacon_bluetoothLELibrary\src\main\AndroidManifest.xml:9:9-45
+10        android:label="@string/app_name" >
+10-->C:\scsa\android-workspace\b_beacon_starter\z_beacon_bluetoothLELibrary\src\main\AndroidManifest.xml:10:9-41
+11    </application>
+12
+13</manifest>

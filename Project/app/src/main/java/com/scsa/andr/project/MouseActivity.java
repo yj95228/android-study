@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,6 +52,7 @@ public class MouseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mouse);
+        setTitle("슬라임 게임");
         frameLayout = (FrameLayout) findViewById(R.id.frame);
         params = new FrameLayout.LayoutParams(1, 1);
 
@@ -73,7 +75,7 @@ public class MouseActivity extends AppCompatActivity {
                 .setAudioAttributes(attributes)
                 .build();
         killSound = soundPool.load(this, R.raw.mouse_scream, 1);
-        mediaPlayer = MediaPlayer.create(this, R.raw.bgm);
+        mediaPlayer = MediaPlayer.create(this, R.raw.cavabien);
         mediaPlayer.setLooping(true);
 
         init(howManyMouse);
@@ -88,14 +90,17 @@ public class MouseActivity extends AppCompatActivity {
         gameSpeed = (int) (gameSpeed * (10 - level) / 10.);
 
         frameLayout.removeAllViews();
+        frameLayout.setBackgroundResource(R.drawable.background);
+        frameLayout.getBackground().setAlpha(100);
 
         //이미지 담을 배열 생성과 이미지 담기
         imageViews = new ImageView[nums];
         for (int i = 0; i < nums; i++) {
             ImageView iv = new ImageView(this);
-            iv.setImageResource(R.drawable.running_mouse_trans);  // 이미지 소스 설정
+            iv.setImageResource(R.drawable.slime);  // 이미지 소스 설정
             frameLayout.addView(iv, params);  // 화면에 표시
             imageViews[i] = iv;     // 배열에 담기
+//            iv.setAlpha(1.0f);
             iv.setOnClickListener(h);  // 이벤트 등록
         }
 
@@ -129,7 +134,7 @@ public class MouseActivity extends AppCompatActivity {
             ImageView iv = (ImageView) v;
             soundPool.play(killSound, 1, 1, 0, 0, 1);  // 소리 내기
             iv.setVisibility(View.INVISIBLE);          // 이미지(쥐) 제거
-
+            
             Toast.makeText(MouseActivity.this, "Die...." + count, Toast.LENGTH_SHORT).show();
             if (count == howManyMouse) {   // 쥐를 다 잡았을때
                 threadEndFlag = false;

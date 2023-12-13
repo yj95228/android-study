@@ -1,0 +1,25 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\scsa\android-workspace\b_beacon_starter\z_beacon_bluetoothLELibrary\src\main\AndroidManifest.xml:2:1-13:12
+INJECTED from C:\scsa\android-workspace\b_beacon_starter\z_beacon_bluetoothLELibrary\src\main\AndroidManifest.xml:2:1-13:12
+	package
+		ADDED from C:\scsa\android-workspace\b_beacon_starter\z_beacon_bluetoothLELibrary\src\main\AndroidManifest.xml:3:5-42
+		INJECTED from C:\scsa\android-workspace\b_beacon_starter\z_beacon_bluetoothLELibrary\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\scsa\android-workspace\b_beacon_starter\z_beacon_bluetoothLELibrary\src\main\AndroidManifest.xml:2:11-69
+application
+ADDED from C:\scsa\android-workspace\b_beacon_starter\z_beacon_bluetoothLELibrary\src\main\AndroidManifest.xml:7:5-11:19
+	android:label
+		ADDED from C:\scsa\android-workspace\b_beacon_starter\z_beacon_bluetoothLELibrary\src\main\AndroidManifest.xml:10:9-41
+	android:icon
+		ADDED from C:\scsa\android-workspace\b_beacon_starter\z_beacon_bluetoothLELibrary\src\main\AndroidManifest.xml:9:9-45
+	android:allowBackup
+		ADDED from C:\scsa\android-workspace\b_beacon_starter\z_beacon_bluetoothLELibrary\src\main\AndroidManifest.xml:8:9-35
+uses-sdk
+INJECTED from C:\scsa\android-workspace\b_beacon_starter\z_beacon_bluetoothLELibrary\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\scsa\android-workspace\b_beacon_starter\z_beacon_bluetoothLELibrary\src\main\AndroidManifest.xml
+INJECTED from C:\scsa\android-workspace\b_beacon_starter\z_beacon_bluetoothLELibrary\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from C:\scsa\android-workspace\b_beacon_starter\z_beacon_bluetoothLELibrary\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\scsa\android-workspace\b_beacon_starter\z_beacon_bluetoothLELibrary\src\main\AndroidManifest.xml

@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 
 public class SpeechToTextActivity extends AppCompatActivity {
@@ -24,9 +26,9 @@ public class SpeechToTextActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_speech_to_text);
-        tv = (TextView)findViewById(R.id.tv);
+        setTitle("음성인식");
 
-        Button bt=(Button)findViewById(R.id.bt);
+        FloatingActionButton bt=(FloatingActionButton)findViewById(R.id.bt);
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -24,6 +24,7 @@ public class TextToSpeechActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityTextToSpeechBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        setTitle("TTS");
 
         tts = new TextToSpeech(this , new TextToSpeech.OnInitListener(){
             @Override
@@ -34,12 +35,12 @@ public class TextToSpeechActivity extends AppCompatActivity {
 //                    int result = tts.setLanguage(Locale.US);
                     if (result == TextToSpeech.LANG_MISSING_DATA ||
                             result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                        binding.messageTV.setText("Language is not available.");
+                        binding.messageTV.setText("가능하지 않은 언어입니다");
                     } else {
                         binding.speakBtn.setEnabled(true);
                     }
                 } else {
-                    binding.messageTV.setText("Could not initialize TextToSpeech.");
+                    binding.messageTV.setText("TTS 변환 실패하였습니다");
                 }
             }
         });

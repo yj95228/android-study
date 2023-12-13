@@ -17,11 +17,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        setTitle("자기 관리 앱");
         initEvent();
     }
 
     private void initEvent() {
+        binding.paintButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, PaintActivity.class);
+            startActivity(intent);
+        });
+
         binding.todoButton.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, MemoMainActivity.class);
             startActivity(intent);

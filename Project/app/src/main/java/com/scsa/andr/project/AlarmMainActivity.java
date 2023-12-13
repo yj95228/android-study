@@ -42,6 +42,8 @@ public class AlarmMainActivity extends AppCompatActivity {
         binding = ActivityAlarmBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        setTitle("알람");
+        
         manager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
         checkStartPermissionRequest();

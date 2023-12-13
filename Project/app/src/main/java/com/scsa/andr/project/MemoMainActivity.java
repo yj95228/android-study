@@ -7,8 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -30,6 +34,7 @@ import androidx.core.content.ContextCompat;
 import com.scsa.andr.project.databinding.ActivityMemoMainBinding;
 import com.scsa.andr.project.http.ApiService;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +59,8 @@ public class MemoMainActivity extends AppCompatActivity {
         binding = ActivityMemoMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        setTitle("TODO LIST");
+
         apiService = ApplicationClass.retrofit.create(ApiService.class);
 
 //        dbHelper = new DBHelper(this, "mydb.db", null, 1);
@@ -71,6 +78,32 @@ public class MemoMainActivity extends AppCompatActivity {
 
         refresh();
     }
+
+    private void processIntent(List<MemoDto> list, Intent intent) {
+        String action = intent.getAction();
+        // Main, Ndef_discovered
+        if (action != null && action.equals(NfcAdapter.ACTION_NDEF_DISCOVERED)) {
+            Parcelable[] parcelable = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+            for(Parcelable parcelable1 : parcelable) {
+                NdefMessage message = (NdefMessage) parcelable1;
+                NdefRecord[] records = message.getRecords();
+                for (NdefRecord record : records) {
+                    byte [] b = record.getPayload();
+                    int idx = Integer.parseInt(new String(b, 3, b.length-3).split(":")[1]);
+                    if (idx == -1 || list.size() <= idx) {
+                        startActivityForResult(new Intent(this, MemoEditActivity.class), Util.INSERT);
+                    } else {
+                        Intent nfcIntent = new Intent(MemoMainActivity.this, MemoEditActivity.class);
+                        nfcIntent.putExtra("id", idx);
+                        nfcIntent.putExtra("memo", list.get(idx));
+                        startActivityForResult(nfcIntent, Util.EDIT);
+                    }
+                }
+            }
+
+        }
+    }
+
     private void refresh() {
 //        list = dbHelper.selectAll();
 
@@ -82,6 +115,7 @@ public class MemoMainActivity extends AppCompatActivity {
                     list = response.body();
                     adapter.notifyDataSetChanged();
                     Log.d(TAG, "onResponse: "+ list);
+                    processIntent(list, getIntent());
                 }
             }
 
@@ -305,7 +339,9 @@ public class MemoMainActivity extends AppCompatActivity {
             TextView textView = view.findViewById(R.id.title);
             TextView date = view.findViewById(R.id.date);
             textView.setText(dto.getTitle());
-            date.setText(Util.getFormattedDate(dto.getRegDate()));
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy년 MM월 dd일 hh:mm:ss");
+//            date.setText(Util.getFormattedDate(dto.getRegDate()));
+            date.setText(formatter.format(dto.getRegDate()));
 
             return view;
         }

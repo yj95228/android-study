@@ -8,68 +8,78 @@
 
     <Button
         android:id="@+id/todo_button"
-        android:layout_width="wrap_content"
+        android:layout_width="128dp"
         android:layout_height="wrap_content"
+        android:backgroundTint="#F7AEF8"
         android:text="TODO-LIST"
         app:layout_constraintBottom_toTopOf="@+id/alarm_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/paint_button" />
+
+    <Button
+        android:id="@+id/paint_button"
+        android:layout_width="128dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#FDC5F5"
+        android:text="메모장"
+        app:layout_constraintBottom_toTopOf="@+id/todo_button"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/alarm_button"
-        android:layout_width="wrap_content"
+        android:layout_width="128dp"
         android:layout_height="wrap_content"
+        android:backgroundTint="#D59BF2"
         android:text="알람"
         app:layout_constraintBottom_toTopOf="@+id/mouse_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/todo_button" />
 
     <Button
         android:id="@+id/mouse_button"
-        android:layout_width="wrap_content"
+        android:layout_width="128dp"
         android:layout_height="wrap_content"
+        android:backgroundTint="#B388EB"
         android:text="쥐잡기 게임"
         app:layout_constraintBottom_toTopOf="@+id/speech_to_text_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/alarm_button" />
 
     <Button
         android:id="@+id/speech_to_text_button"
-        android:layout_width="wrap_content"
+        android:layout_width="128dp"
         android:layout_height="wrap_content"
+        android:backgroundTint="#8093F1"
         android:text="음성인식"
         app:layout_constraintBottom_toTopOf="@+id/text_to_speech_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mouse_button" />
 
     <Button
         android:id="@+id/text_to_speech_button"
-        android:layout_width="wrap_content"
+        android:layout_width="128dp"
         android:layout_height="wrap_content"
-        android:text="글 -> 음성"
+        android:backgroundTint="#79B8F4"
+        android:text="TTS"
         app:layout_constraintBottom_toTopOf="@+id/news_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/speech_to_text_button"
-        app:layout_constraintVertical_bias="0.276" />
+        app:layout_constraintTop_toBottomOf="@+id/speech_to_text_button" />
 
     <Button
         android:id="@+id/news_button"
-        android:layout_width="wrap_content"
+        android:layout_width="128dp"
         android:layout_height="wrap_content"
+        android:backgroundTint="#72DDF7"
         android:text="뉴스 읽기"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_to_speech_button" />
 
