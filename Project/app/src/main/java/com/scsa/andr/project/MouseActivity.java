@@ -52,7 +52,7 @@ public class MouseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mouse);
-        setTitle("슬라임 게임");
+        setTitle("슬라임 잡기");
         frameLayout = (FrameLayout) findViewById(R.id.frame);
         params = new FrameLayout.LayoutParams(1, 1);
 

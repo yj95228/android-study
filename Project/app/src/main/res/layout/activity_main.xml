@@ -44,7 +44,7 @@
         android:layout_width="128dp"
         android:layout_height="wrap_content"
         android:backgroundTint="#B388EB"
-        android:text="쥐잡기 게임"
+        android:text="슬라임 잡기"
         app:layout_constraintBottom_toTopOf="@+id/speech_to_text_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -18,6 +18,8 @@ public class MemoEditActivity extends AppCompatActivity {
         binding = ActivityMemoEditBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        setTitle("TODO LIST");
+
         Intent fromMain = getIntent();
         MemoDto memo = (MemoDto) fromMain.getSerializableExtra("memo") ;
 //        int position = fromMain.getIntExtra("position", -1);// 의미 x

@@ -1,18 +1,29 @@
 package com.scsa.andr.project;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.media.MediaScannerConnection;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.scsa.andr.project.databinding.ActivityPaintBinding;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,6 +67,9 @@ class PathWithPaint{
 public class PaintActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity_SCSA";
+    ActivityPaintBinding binding;
+    boolean palette;
+    boolean brush;
     List<Point> list = new ArrayList<>();
     int color = Color.BLACK;
     float stroke = 16f;
@@ -140,58 +154,192 @@ public class PaintActivity extends AppCompatActivity {
             list.clear();
             invalidate();
         }
+
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_paint);
+        binding = ActivityPaintBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         
         setTitle("메모장");
         
-        LinearLayout layout = findViewById(R.id.paint_view);
+        LinearLayout layout = binding.paintView;
         MyView myView = new MyView(this);
         layout.addView(myView);
 
-        findViewById(R.id.black_button).setOnClickListener(v -> {
+        palette = true;
+        brush = true;
+
+        binding.palette.setOnClickListener(v -> {
+            palette = paletteOpen();
+        });
+
+        binding.brush.setOnClickListener(v -> {
+            brush = brushOpen();
+        });
+
+        binding.cleanLayout.setVisibility(View.INVISIBLE);
+        binding.clean.setOnClickListener(v -> {
+            binding.cleanLayout.setVisibility(
+                    (binding.cleanLayout.getVisibility() == View.VISIBLE)
+                            ? View.INVISIBLE
+                            : View.VISIBLE
+            );
+        });
+
+        binding.blackButton.setOnClickListener(v -> {
             color = Color.BLACK;
+            palette = paletteOpen();
         });
 
-        findViewById(R.id.red_button).setOnClickListener(v -> {
+        binding.redButton.setOnClickListener(v -> {
             color = Color.RED;
+            palette = paletteOpen();
         });
 
-        findViewById(R.id.blue_button).setOnClickListener(v -> {
+        binding.blueButton.setOnClickListener(v -> {
             color = Color.BLUE;
+            palette = paletteOpen();
         });
 
-        findViewById(R.id.eraser).setOnClickListener(v -> {
-            color = Color.WHITE;
-        });
-
-        findViewById(R.id.clear_button).setOnClickListener(v -> {
-            myView.clearCanvas();
-            Log.d(TAG, "onCreate: clear "+list);
-        });
-
-        findViewById(R.id.ink5).setOnClickListener(v -> {
-            stroke = 16f;
-        });
-
-        findViewById(R.id.ink4).setOnClickListener(v -> {
-            stroke = 12f;
-        });
-
-        findViewById(R.id.ink3).setOnClickListener(v -> {
-            stroke = 8f;
-        });
-
-        findViewById(R.id.ink2).setOnClickListener(v -> {
-            stroke = 6f;
-        });
-
-        findViewById(R.id.ink1).setOnClickListener(v -> {
+        binding.brush1button.setOnClickListener(v -> {
             stroke = 4f;
+            brush = brushOpen();
         });
+
+        binding.brush2button.setOnClickListener(v -> {
+            stroke = 8f;
+            brush = brushOpen();
+        });
+
+        binding.brush3button.setOnClickListener(v -> {
+            stroke = 16f;
+            brush = brushOpen();
+        });
+
+        binding.brush4button.setOnClickListener(v -> {
+            stroke = 32f;
+            brush = brushOpen();
+        });
+
+        binding.brush5button.setOnClickListener(v -> {
+            stroke = 64f;
+            brush = brushOpen();
+        });
+
+        binding.eraser.setOnClickListener(v -> {
+            color = Color.WHITE;
+            binding.cleanLayout.setVisibility(View.GONE);
+        });
+
+        binding.clearButton.setOnClickListener(v -> {
+            myView.clearCanvas();
+            binding.cleanLayout.setVisibility(View.GONE);
+        });
+
+        binding.saveButton.setOnClickListener(v -> {
+            saveImage(myView);
+        });
+    }
+
+    public boolean paletteOpen(){
+        if(palette){
+            ValueAnimator blackAnimation = ObjectAnimator.ofFloat(binding.blackButton, "translationX", 180f);
+            blackAnimation.setDuration(500);
+            blackAnimation.start();
+            ValueAnimator redAnimation = ObjectAnimator.ofFloat(binding.redButton, "translationX", 310f);
+            redAnimation.setDuration(500);
+            redAnimation.start();
+            ValueAnimator blueAnimation = ObjectAnimator.ofFloat(binding.blueButton, "translationX", 440f);
+            blueAnimation.setDuration(500);
+            blueAnimation.start();
+            return false;
+        }else{
+            ValueAnimator blackAnimation = ObjectAnimator.ofFloat(binding.blackButton, "translationX", 0);
+            blackAnimation.setDuration(500);
+            blackAnimation.start();
+            ValueAnimator redAnimation = ObjectAnimator.ofFloat(binding.redButton, "translationX", 0);
+            redAnimation.setDuration(500);
+            redAnimation.start();
+            ValueAnimator blueAnimation = ObjectAnimator.ofFloat(binding.blueButton, "translationX", 0);
+            blueAnimation.setDuration(500);
+            blueAnimation.start();
+            return true;
+        }
+    }
+
+    public boolean brushOpen(){
+        Log.d(TAG, "brushOpen: "+brush);
+        if(brush){
+            ValueAnimator brush1Animation = ObjectAnimator.ofFloat(binding.brush1, "translationX", 180f);
+            brush1Animation.setDuration(500);
+            brush1Animation.start();
+            ValueAnimator brush2Animation = ObjectAnimator.ofFloat(binding.brush2, "translationX", 310f);
+            brush2Animation.setDuration(500);
+            brush2Animation.start();
+            ValueAnimator brush3Animation = ObjectAnimator.ofFloat(binding.brush3, "translationX", 440f);
+            brush3Animation.setDuration(500);
+            brush3Animation.start();
+            ValueAnimator brush4Animation = ObjectAnimator.ofFloat(binding.brush4, "translationX", 570f);
+            brush4Animation.setDuration(500);
+            brush4Animation.start();
+            ValueAnimator brush5Animation = ObjectAnimator.ofFloat(binding.brush5, "translationX", 700f);
+            brush5Animation.setDuration(500);
+            brush5Animation.start();
+            return false;
+        }else{
+            ValueAnimator brush1Animation = ObjectAnimator.ofFloat(binding.brush1, "translationX", 0);
+            brush1Animation.setDuration(500);
+            brush1Animation.start();
+            ValueAnimator brush2Animation = ObjectAnimator.ofFloat(binding.brush2, "translationX", 0);
+            brush2Animation.setDuration(500);
+            brush2Animation.start();
+            ValueAnimator brush3Animation = ObjectAnimator.ofFloat(binding.brush3, "translationX", 0);
+            brush3Animation.setDuration(500);
+            brush3Animation.start();
+            ValueAnimator brush4Animation = ObjectAnimator.ofFloat(binding.brush4, "translationX", 0);
+            brush4Animation.setDuration(500);
+            brush4Animation.start();
+            ValueAnimator brush5Animation = ObjectAnimator.ofFloat(binding.brush5, "translationX", 0);
+            brush5Animation.setDuration(500);
+            brush5Animation.start();
+            return true;
+        }
+    }
+
+    public void saveImage(View view) {
+        // MyView에서 그려진 이미지를 Bitmap으로 변환
+        Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        view.draw(canvas);
+
+        // 저장할 디렉토리 생성
+        File directory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "MyPaintApp");
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+
+        // 파일명 생성 (현재 시간 기반으로 설정)
+        String fileName = "painting_" + System.currentTimeMillis() + ".png";
+
+        // 파일 생성
+        File file = new File(directory, fileName);
+        try {
+            file.createNewFile();
+            FileOutputStream ostream = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, ostream);
+            ostream.flush();
+            ostream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // 갤러리에 이미지 스캔 요청
+        MediaScannerConnection.scanFile(this, new String[]{file.toString()}, null, null);
+
+        // 사용자에게 저장 완료 메시지 표시
+        Toast.makeText(this, "이미지가 저장되었습니다.", Toast.LENGTH_SHORT).show();
     }
 }
