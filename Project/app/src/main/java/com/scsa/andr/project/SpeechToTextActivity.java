@@ -29,6 +29,7 @@ public class SpeechToTextActivity extends AppCompatActivity {
         setTitle("음성인식");
 
         FloatingActionButton bt=(FloatingActionButton)findViewById(R.id.bt);
+        tv = findViewById(R.id.tv);
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

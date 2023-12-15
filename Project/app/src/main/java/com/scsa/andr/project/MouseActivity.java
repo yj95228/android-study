@@ -44,6 +44,7 @@ public class MouseActivity extends AppCompatActivity {
     int x = 200;        //시작위치
     int y = 200;        //시작위치
     ImageView[] imageViews; // 이미지들을 담아 놓을 배열
+    ImageView[] imageViews2; // 이미지들을 담아 놓을 배열
 
     int level = 1;      // 게임 레벨
     int howManyMouse = 5;  //startLevel 5마리. 레벨마다 증가
@@ -102,6 +103,34 @@ public class MouseActivity extends AppCompatActivity {
             imageViews[i] = iv;     // 배열에 담기
 //            iv.setAlpha(1.0f);
             iv.setOnClickListener(h);  // 이벤트 등록
+        }
+
+        imageViews2 = new ImageView[level];
+        for (int i = 0; i < level; i++) {
+            ImageView iv2 = new ImageView(this);
+            iv2.setImageResource(R.drawable.blue_mushmom);  // 이미지 소스 설정
+            frameLayout.addView(iv2, params);  // 화면에 표시
+            imageViews2[i] = iv2;     // 배열에 담기
+//            iv.setAlpha(1.0f);
+            iv2.setOnClickListener(v -> {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(MouseActivity.this);
+                dialog.setMessage("계속하시겠습니까?");
+                dialog.setPositiveButton("네", new OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        level = 1;      // 게임 레벨
+                        howManyMouse = 5;  //startLevel 5마리. 레벨마다 증가
+                        count = 0;   //잡은 쥐 개수를 저장할 변수
+                        gameSpeed = 1000;  // 게임 속도 조절
+                        init(nums);
+                    }
+                });
+                dialog.setNegativeButton("아니오", new OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
+                dialog.show();
+            });  // 이벤트 등록
         }
 
         mouseTask = new MouseTask();  //일정 간격으로 이미지 위치를 바꿀 쓰레드 실행
@@ -169,7 +198,13 @@ public class MouseActivity extends AppCompatActivity {
             img.layout(x, y, x + imgWidth, y + imgHeight);
             img.invalidate();
         }
+        for (ImageView img : imageViews2) {
+            x = random.nextInt(myWidth - imgWidth);
+            y = random.nextInt(myHeight - imgHeight);
 
+            img.layout(x, y, x + imgWidth, y + imgHeight);
+            img.invalidate();
+        }
     }
 
     // 일정 시간 간격으로 쥐를 다시 그리도록 update()를 호출하는 쓰레드
